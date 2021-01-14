@@ -1,4 +1,4 @@
-import Frame from './components/frame/index'
+import Frame from './containers/frame'
 
 function App() {
   return (

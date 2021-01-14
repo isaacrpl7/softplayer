@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Player from '../../components/player/index'
-import requestUserData from '../../requests/requestUserData'
-import requestPausePlayback from '../../requests/requestPausePlayback'
-import requestResume from '../../requests/requestResume'
+import {Player} from '../components'
+import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback} from '../requests'
 
 const clientID = "";
 const authURI = "https://accounts.spotify.com/authorize";
@@ -30,6 +28,7 @@ export default function Frame({children, ...restProps}){
     const [token, setToken] = useState("");
     const [userData, setUserData] = useState({});
     const [songData, setSongData] = useState({});
+    const [paused, setPaused] = useState(true);
 
     const connectToSpotify = (token) => {
         let player = new window.Spotify.Player({
@@ -51,6 +50,7 @@ export default function Frame({children, ...restProps}){
                     console.log("User is not playing music through the web playback sdk");
                 } else {
                     setSongData(state.track_window);
+                    setPaused(state.paused);
                 }
             });
             console.log(state);
@@ -69,28 +69,26 @@ export default function Frame({children, ...restProps}){
         // Connect to the player!
         player.connect();
     }
-    
-    function loadSpotifyPlayer(token) {
-        if(!window.onSpotifyPlaybackSDKReady){
-            window.onSpotifyPlaybackSDKReady = connectToSpotify;
-            connectToSpotify(token);
-        } else {
-            connectToSpotify(token);
-        }
-    }
 
     useEffect(() => {
         setToken(getHash().access_token);
     }, [token]);
 
     useEffect(() => {
-        requestUserData(token).then(userData => {
-            setUserData(userData);
-            loadSpotifyPlayer(token);
-        }).catch(e => {
-            console.log(e);
-            setUserData({});
-        });
+        if(token) {
+            requestUserData(token).then(userData => {
+                setUserData(userData);
+                if(!window.onSpotifyPlaybackSDKReady){
+                    window.onSpotifyPlaybackSDKReady = connectToSpotify;
+                    connectToSpotify(token);
+                } else {
+                    connectToSpotify(token);
+                }
+            }).catch(e => {
+                console.log(e);
+                setUserData({});
+            });
+        }
     }, [token]);
 
     return (
@@ -99,11 +97,24 @@ export default function Frame({children, ...restProps}){
                 href={`${authURI}?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&state=${state}`}
             >{token ? null : "Login"}</a>
             {token ? console.log(userData) : null}
-            <p>{songData.current_track ? songData.current_track.name : null}</p>
-            <button onClick={()=>{requestPausePlayback(token)}}>Pause</button>
-            <button onClick={() => {
-                requestResume(token);
-            }}>Play</button>
+            <Player>
+                <Player.Meta>
+                    <Player.Title>{songData.current_track ? songData?.current_track.name.toUpperCase() : null}</Player.Title>
+                    <Player.Artist>{songData.current_track ? songData?.current_track.artists[0].name.toUpperCase() : null}</Player.Artist>
+                </Player.Meta>
+                <Player.Buttons>
+                    <Player.PrevButton onClick={() => {requestPrevPlayback(token)}} />
+                    {paused ? 
+                        <Player.PlayButton 
+                            onClick={() => {requestResume(token);}} 
+                        /> : 
+                        <Player.PauseButton 
+                            onClick={()=>{requestPausePlayback(token)}}
+                    />}
+                    <Player.NextButton onClick={() => {requestNextPlayback(token)}} />
+                </Player.Buttons>
+            </Player>
+            
         </>
     );
 }
