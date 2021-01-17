@@ -24,6 +24,10 @@ export const Container = styled.div`
     animation-duration: 0.5s;
     animation-iteration-count: 1;
     filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25));
+
+    @media(max-width: 450px){
+        width: 300px;
+    }
 `;
 
 export const Close = styled.img`
@@ -60,6 +64,9 @@ export const Input = styled.input`
     margin-left: 1rem;
     width: 400px;
     outline: none;
+    @media(max-width: 450px){
+        width: 200px;
+    }
 `;
 
 export const Submit = styled.img`

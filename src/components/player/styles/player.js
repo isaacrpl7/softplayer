@@ -49,7 +49,11 @@ export const Artist = styled.p`
 `;
 
 export const Container = styled.div`
-    margin-top: 40rem;
+    margin-top: 35rem;
+
+    @media(max-width: 450px){
+        margin-top: 20rem;
+    }
 `;
 
 export const Buttons = styled.div`

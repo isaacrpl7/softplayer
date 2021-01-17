@@ -25,6 +25,10 @@ export const Container = styled.div`
         background: #938e89;
     }
     margin-bottom: 1rem;
+
+    @media(max-width: 450px){
+        max-height: 400px;
+    }
 `;
 
 export const TrackContainer = styled.div`
@@ -32,26 +36,46 @@ export const TrackContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 1rem;
 `;
 
 export const TrackImg = styled.img`
     width: 100px;
     height: 100px;
     margin-left: 1rem;
+    @media(max-width: 450px){
+        width: 80px;
+        height: 80px;
+    }
 `;
 
 export const TrackMeta = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: flex-center;
     align-items: flex-start;
+    align-content: flex-start;
     margin-left: 2rem;
+    
+    @media(max-width: 450px){
+        margin-left: 1rem;
+    }
 `;
 
 export const TrackTitle = styled.h1`
     font-size: 18px;
+    margin: 0;
+
+    @media(max-width: 450px){
+        font-size: 15px;
+    }
 `;
 
 export const TrackSubtitle = styled.p`
     font-size: 16px;
+    margin: 0;
+
+    @media(max-width: 450px){
+        font-size: 10px;
+    }
 `;
