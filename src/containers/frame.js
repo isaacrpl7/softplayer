@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import {Player, Search} from '../components'
+import {Player, Search, TracksSearch} from '../components'
+import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
 import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
-const clientID = "";
+const clientID = "74aaa783ef0b4f32a6874c9605c5b6f3";
 const authURI = "https://accounts.spotify.com/authorize";
 const redirectURI = "http://localhost:3000";
 const state = "123";
@@ -14,6 +15,8 @@ const scopes = [
     "user-read-email",
     "streaming"
 ];
+
+let tracks = null;
 
 //Pegar o hash da URL
 const getHash = () => { //improve this part later TODO
@@ -32,6 +35,7 @@ export default function Frame({children, ...restProps}){
     const [paused, setPaused] = useState(true);
     const [searchActive, setSearchActive] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState({});
 
     const connectToSpotify = (token) => {
         let player = new window.Spotify.Player({
@@ -100,7 +104,7 @@ export default function Frame({children, ...restProps}){
             <a
                 href={`${authURI}?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&state=${state}`}
             >{token ? null : "Login to spotify"}</a>
-            <Search.Open onClick={() => {setSearchActive(true); console.log(searchActive)}} />
+            <Search.Open onClick={() => {setSearchActive(true)}} />
             <Search active={searchActive}>
                 <Search.Close onClick={() => {setSearchActive(false)}} />
                 <Search.Input 
@@ -108,8 +112,20 @@ export default function Frame({children, ...restProps}){
                     requestSearch={requestSearch} 
                     searchTerm={searchTerm} 
                     setSearchTerm={setSearchTerm}
+                    setSearchResults={setSearchResults}
                 />
-                
+                <TracksSearch>
+                    {searchResults.tracks?.items ? 
+                        searchResults.tracks.items.map(track => (
+                            <TrackContainer onClick={() => {requestSong(token, deviceID, track.uri)}} key={track.uri}>
+                                <TracksSearch.Track 
+                                    track={track}
+                                />
+                            </TrackContainer>
+                        ))
+                    :
+                    null}
+                </TracksSearch>
             </Search>
             <Player>
                 <Player.Meta>

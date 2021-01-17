@@ -5,8 +5,30 @@ export const Background = createGlobalStyle`
         background-color: #f7f7f7;
         color: #161616;
         font-family: "Circular Std Book", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         margin: 0;
         padding: 0;
+        /* width */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #e7e7e7;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #b8b3ac;
+            border-radius: 1rem;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #938e89;
+        }
     }
 `;
 

@@ -4,7 +4,7 @@ import * as Player from '../../player/styles/player'
 
 export const Container = styled.div`
     @keyframes open {
-        from   {top: 0; display: none;}
+        from   {top: -10rem; display: none;}
         to  {top: 2rem; display:block;}
     }
     position: absolute;
@@ -15,13 +15,15 @@ export const Container = styled.div`
     text-align: center;
     z-index: 2;
     width: 500px;
+    max-height: 700px;
     background-color: #E7E7E7;
     border-radius: 20px;
     display: ${({ active }) => (active ? 'block' : 'none')};
     top: ${({ active }) => (active ? '2rem' : '0')};
     animation-name: open;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-iteration-count: 1;
+    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.25));
 `;
 
 export const Close = styled.img`
@@ -65,9 +67,9 @@ export const Submit = styled.img`
     cursor: pointer;
 `;
 
-
 export const Background = createGlobalStyle`
    ${Player.Container}, ${Open} {
         filter: ${({ active }) => (active ? 'blur(0.3rem)' : 'none')};
+        transition: filter 0.5s;
     }
 `;

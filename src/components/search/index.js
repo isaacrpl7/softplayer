@@ -4,7 +4,7 @@ import { Background, Container, Close, Open, Input, Submit, Form } from './style
 export default function Search({children, ...restProps}){
     return (
         <>
-            <Background {...restProps}/>
+            <Background {...restProps}/> 
             <Container {...restProps}>{children}</Container>
         </>
     )
@@ -18,7 +18,7 @@ Search.Open = function SearchOpen({...restProps}){
     return <Open {...restProps} src="components/search/search.svg" alt="open search" />
 }
 
-Search.Input = function SearchInput({token, requestSearch, searchTerm, setSearchTerm, ...restProps}){
+Search.Input = function SearchInput({token, requestSearch, searchTerm, setSearchTerm, setSearchResults, ...restProps}){
     return (
     <>
         <Form>
@@ -27,7 +27,7 @@ Search.Input = function SearchInput({token, requestSearch, searchTerm, setSearch
                 value={searchTerm}
                 onChange={({target}) => setSearchTerm(target.value)}
                 placeholder="Search a song"
-                onKeyDown={({key})=>{if(key==="Enter") requestSearch(token, searchTerm).then(data => console.log(data))}}
+                onKeyDown={({key})=>{if(key==="Enter") requestSearch(token, searchTerm).then(data => setSearchResults(data))}}
                 tabIndex="0"
                 {...restProps} 
             />
