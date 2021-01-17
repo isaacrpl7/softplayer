@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import {Player} from '../components'
-import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback} from '../requests'
+import {Player, Search} from '../components'
+import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
 const clientID = "";
 const authURI = "https://accounts.spotify.com/authorize";
@@ -26,9 +26,12 @@ const getHash = () => { //improve this part later TODO
 
 export default function Frame({children, ...restProps}){
     const [token, setToken] = useState("");
+    const [deviceID, setDeviceID] = useState("");
     const [userData, setUserData] = useState({});
     const [songData, setSongData] = useState({});
     const [paused, setPaused] = useState(true);
+    const [searchActive, setSearchActive] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const connectToSpotify = (token) => {
         let player = new window.Spotify.Player({
@@ -59,6 +62,7 @@ export default function Frame({children, ...restProps}){
         // Ready
         player.addListener('ready', ({ device_id }) => {
             console.log('Ready with Device ID', device_id);
+            setDeviceID(device_id);
         });
     
         // Not Ready
@@ -95,8 +99,18 @@ export default function Frame({children, ...restProps}){
         <>
             <a
                 href={`${authURI}?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&state=${state}`}
-            >{token ? null : "Login"}</a>
-            {token ? console.log(userData) : null}
+            >{token ? null : "Login to spotify"}</a>
+            <Search.Open onClick={() => {setSearchActive(true); console.log(searchActive)}} />
+            <Search active={searchActive}>
+                <Search.Close onClick={() => {setSearchActive(false)}} />
+                <Search.Input 
+                    token={token} 
+                    requestSearch={requestSearch} 
+                    searchTerm={searchTerm} 
+                    setSearchTerm={setSearchTerm}
+                />
+                
+            </Search>
             <Player>
                 <Player.Meta>
                     <Player.Title>{songData.current_track ? songData?.current_track.name.toUpperCase() : null}</Player.Title>

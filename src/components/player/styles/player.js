@@ -5,6 +5,8 @@ export const Background = createGlobalStyle`
         background-color: #f7f7f7;
         color: #161616;
         font-family: "Circular Std Book", sans-serif;
+        margin: 0;
+        padding: 0;
     }
 `;
 
