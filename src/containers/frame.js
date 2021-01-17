@@ -3,7 +3,7 @@ import {Player, Search, TracksSearch} from '../components'
 import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
 import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
-const clientID = "74aaa783ef0b4f32a6874c9605c5b6f3";
+const clientID = "";
 const authURI = "https://accounts.spotify.com/authorize";
 const redirectURI = "http://localhost:3000";
 const state = "123";
