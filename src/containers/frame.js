@@ -4,8 +4,9 @@ import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
 import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
 /** TODO
- * - Adicionar imagem do album no centro da página
- * - Melhorias no código
+ * - Ajeitar estilos do login com spotify
+ * - Melhorias no código (não esquecer de comentar mais)
+ * - Mudar o clientID
  * - Adicionar a logo do spotify e links que levam a música para o player do spotify
  * - Fazer barra de play + volume
  * - Adicionar Playlist de like (reutilizar componente de busca)
@@ -137,6 +138,7 @@ export default function Frame({children, ...restProps}){
                 </TracksSearch>
             </Search>
             <Player>
+                {songData.current_track ? <Player.Image src={songData?.current_track.album.images[0].url}  alt="Album Image" /> : null}
                 <Player.Meta>
                     <Player.Title>{songData.current_track ? songData?.current_track.name.toUpperCase() : null}</Player.Title>
                     <Player.Artist>{songData.current_track ? songData?.current_track.artists[0].name.toUpperCase() : null}</Player.Artist>

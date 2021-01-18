@@ -32,6 +32,17 @@ export const Background = createGlobalStyle`
     }
 `;
 
+export const AlbumImage = styled.img`
+    display: block;
+    margin: auto;
+    margin-bottom: 5rem;
+
+    @media(max-width: 450px){
+        margin-bottom: 2.5rem;
+        width: 15rem;
+    }
+`;
+
 export const Meta = styled.div`
     text-align: center;
 `;
@@ -49,10 +60,13 @@ export const Artist = styled.p`
 `;
 
 export const Container = styled.div`
-    margin-top: 35rem;
+    position: absolute;
+    bottom: 10rem;
+    left: 0;
+    right: 0;
 
     @media(max-width: 450px){
-        margin-top: 20rem;
+        bottom: 5rem;
     }
 `;
 

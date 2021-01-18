@@ -1,5 +1,5 @@
 import React from 'react'
-import { PauseButton, PlayButton, Background, Container, Title, Artist, Meta, Buttons, PrevButton, NextButton } from './styles/player';
+import { PauseButton, PlayButton, Background, Container, Title, Artist, Meta, Buttons, PrevButton, NextButton, AlbumImage } from './styles/player';
 
 export default function Player({ children, ...restProps }){
     return (
@@ -8,6 +8,10 @@ export default function Player({ children, ...restProps }){
             <Container {...restProps}>{children}</Container>
         </>
     );
+}
+
+Player.Image = function playerImage({...restProps}) {
+    return <AlbumImage {...restProps} />
 }
 
 Player.Buttons = function buttons({ children, ...restProps }){

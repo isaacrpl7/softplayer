@@ -65,6 +65,7 @@ export const TrackMeta = styled.div`
 export const TrackTitle = styled.h1`
     font-size: 18px;
     margin: 0;
+    margin-bottom: 0.2rem;
 
     @media(max-width: 450px){
         font-size: 15px;
