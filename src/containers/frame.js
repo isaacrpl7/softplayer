@@ -3,9 +3,18 @@ import {Player, Search, TracksSearch} from '../components'
 import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
 import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
-const clientID = "";
+/** TODO
+ * - Adicionar imagem do album no centro da página
+ * - Melhorias no código
+ * - Adicionar a logo do spotify e links que levam a música para o player do spotify
+ * - Fazer barra de play + volume
+ * - Adicionar Playlist de like (reutilizar componente de busca)
+ * - Pesquisar sobre API do youtube
+ */
+
+const clientID = "4ecb1afd70c64332ba007b70692f8457";
 const authURI = "https://accounts.spotify.com/authorize";
-const redirectURI = "http://localhost:3000";
+const redirectURI = "http://localhost:3000/";
 const state = "123";
 const scopes = [
     "user-read-currently-playing",
