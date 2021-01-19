@@ -6,7 +6,7 @@ import {requestUserData, requestPausePlayback, requestResume, requestPrevPlaybac
 /** TODO
  * - Ajeitar estilos do login com spotify
  * - Melhorias no código (não esquecer de comentar mais)
- * - Mudar o clientID
+ * - Tratar exceções (token inválido e track não encontrado)
  * - Adicionar a logo do spotify e links que levam a música para o player do spotify
  * - Fazer barra de play + volume
  * - Adicionar Playlist de like (reutilizar componente de busca)
@@ -16,6 +16,7 @@ import {requestUserData, requestPausePlayback, requestResume, requestPrevPlaybac
 const clientID = "4ecb1afd70c64332ba007b70692f8457";
 const authURI = "https://accounts.spotify.com/authorize";
 const redirectURI = "https://softplayer.vercel.app/";
+//const redirectURI = "http://localhost:3000/";
 const state = "123";
 const scopes = [
     "user-read-currently-playing",

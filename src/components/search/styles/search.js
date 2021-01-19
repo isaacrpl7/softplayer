@@ -4,8 +4,8 @@ import * as Player from '../../player/styles/player'
 
 export const Container = styled.div`
     @keyframes open {
-        from   {top: -10rem; display: none;}
-        to  {top: 2rem; display:block;}
+        from   {transform: translate(0,-15rem); display: none;}
+        to  {transform: translate(0,2rem); display:block;}
     }
     position: absolute;
     margin-left: auto;
@@ -19,7 +19,7 @@ export const Container = styled.div`
     background-color: #E7E7E7;
     border-radius: 20px;
     display: ${({ active }) => (active ? 'block' : 'none')};
-    top: ${({ active }) => (active ? '2rem' : '0')};
+    transform: ${({ active }) => (active ? 'translate(0,2rem)' : 'translate(0,-10rem)')};
     animation-name: open;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
