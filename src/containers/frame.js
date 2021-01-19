@@ -15,7 +15,7 @@ import {requestUserData, requestPausePlayback, requestResume, requestPrevPlaybac
 
 const clientID = "4ecb1afd70c64332ba007b70692f8457";
 const authURI = "https://accounts.spotify.com/authorize";
-const redirectURI = "https://softplayer.vercel.app/client/";
+const redirectURI = "https://softplayer.vercel.app/";
 const state = "123";
 const scopes = [
     "user-read-currently-playing",
