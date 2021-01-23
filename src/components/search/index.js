@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Background, Container, Close, Open, Input, Submit, Form } from './styles/search'
 
 export default function Search({children, ...restProps}){
@@ -19,6 +19,8 @@ Search.Open = function SearchOpen({...restProps}){
 }
 
 Search.Input = function SearchInput({token, requestSearch, searchTerm, setSearchTerm, setSearchResults, ...restProps}){
+    const [foundSongs, setFoundSongs] = useState(true);
+
     return (
     <>
         <Form>

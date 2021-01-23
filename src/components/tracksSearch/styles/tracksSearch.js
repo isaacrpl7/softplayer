@@ -77,6 +77,6 @@ export const TrackSubtitle = styled.p`
     margin: 0;
 
     @media(max-width: 450px){
-        font-size: 10px;
+        font-size: 12px;
     }
 `;

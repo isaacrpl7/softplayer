@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import {Player, Search, TracksSearch} from '../components'
+import { Player, Search, TracksSearch, Login } from '../components'
 import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
-import {requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
+import { requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
 
 /** TODO
- * - Ajeitar estilos do login com spotify
  * - Melhorias no código (não esquecer de comentar mais)
  * - Tratar exceções (token inválido e track não encontrado)
  * - Adicionar a logo do spotify e links que levam a música para o player do spotify
@@ -13,7 +12,6 @@ import {requestUserData, requestPausePlayback, requestResume, requestPrevPlaybac
  * - Pesquisar sobre API do youtube
  */
 
-const clientID = "4ecb1afd70c64332ba007b70692f8457";
 const authURI = "https://accounts.spotify.com/authorize";
 const redirectURI = "https://softplayer.vercel.app/";
 //const redirectURI = "http://localhost:3000/";
@@ -26,8 +24,6 @@ const scopes = [
     "user-read-email",
     "streaming"
 ];
-
-let tracks = null;
 
 //Pegar o hash da URL
 const getHash = () => { //improve this part later TODO
@@ -112,9 +108,8 @@ export default function Frame({children, ...restProps}){
 
     return (
         <>
-            <a
-                href={`${authURI}?client_id=${clientID}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&state=${state}`}
-            >{token ? null : "Login to spotify"}</a>
+            { token ?
+            <>
             <Search.Open onClick={() => {setSearchActive(true)}} />
             <Search active={searchActive}>
                 <Search.Close onClick={() => {setSearchActive(false)}} />
@@ -139,7 +134,12 @@ export default function Frame({children, ...restProps}){
                 </TracksSearch>
             </Search>
             <Player>
-                {songData.current_track ? <Player.Image src={songData?.current_track.album.images[0].url}  alt="Album Image" /> : null}
+                {songData.current_track ? 
+                <Player.Image 
+                    src={songData?.current_track.album.images[0].url} 
+                    alt="Album Image" 
+                    draggable={false}
+                /> : null}
                 <Player.Meta>
                     <Player.Title>{songData.current_track ? songData?.current_track.name.toUpperCase() : null}</Player.Title>
                     <Player.Artist>{songData.current_track ? songData?.current_track.artists[0].name.toUpperCase() : null}</Player.Artist>
@@ -156,7 +156,18 @@ export default function Frame({children, ...restProps}){
                     <Player.NextButton onClick={() => {requestNextPlayback(token)}} />
                 </Player.Buttons>
             </Player>
-            
+            </>
+
+            :
+
+            <>
+            <Login>
+                <Login.Button
+                    href={`${authURI}?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${redirectURI}&scope=${scopes.join("%20")}&response_type=token&state=${state}`}
+                >{token ? null : "Login to spotify"}</Login.Button>
+            </Login>
+            </>
+            }
         </>
     );
 }
