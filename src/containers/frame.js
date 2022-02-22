@@ -18,7 +18,7 @@ import { requestUserData, requestPrevPlayback, requestNextPlayback, requestSong,
  */
 
 const authURI = "https://accounts.spotify.com/authorize";
-const redirectURI = process.env.REDIRECT_URL;
+const redirectURI = process.env.REACT_APP_REDIRECT_URL;
 const state = "123";
 const scopes = [
     "user-read-currently-playing",
