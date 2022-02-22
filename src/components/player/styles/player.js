@@ -36,6 +36,7 @@ export const AlbumImage = styled.img`
     display: block;
     margin: auto;
     margin-bottom: 5rem;
+    width: 25rem;
 
     @media(max-width: 450px){
         margin-bottom: 2.5rem;

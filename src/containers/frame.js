@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Player, Search, TracksSearch, Login } from '../components'
 import { TrackContainer } from '../components/tracksSearch/styles/tracksSearch';
-import { requestUserData, requestPausePlayback, requestResume, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
+import { requestUserData, requestPrevPlayback, requestNextPlayback, requestSong, requestSearch} from '../requests'
+
+/** BRAINSTORM
+ * - Adicionar estilos de acordo com as features das ultimas musicas escutadas (mais calma - fundo azul, etc etc)
+ */
 
 /** TODO
+ * - Usar o localStorage para guardar o token (https://glitch.com/~spotify-audio-analysis)
  * - Melhorias no código (não esquecer de comentar mais)
  * - Tratar exceções (token inválido e track não encontrado)
  * - Adicionar a logo do spotify e links que levam a música para o player do spotify
@@ -13,8 +18,8 @@ import { requestUserData, requestPausePlayback, requestResume, requestPrevPlayba
  */
 
 const authURI = "https://accounts.spotify.com/authorize";
-const redirectURI = "https://softplayer.vercel.app/";
-//const redirectURI = "http://localhost:3000/";
+//const redirectURI = "https://softplayer.vercel.app/";
+const redirectURI = "http://localhost:3000/";
 const state = "123";
 const scopes = [
     "user-read-currently-playing",
@@ -24,6 +29,7 @@ const scopes = [
     "user-read-email",
     "streaming"
 ];
+var player;
 
 //Pegar o hash da URL
 const getHash = () => { //improve this part later TODO
@@ -45,7 +51,7 @@ export default function Frame({children, ...restProps}){
     const [searchResults, setSearchResults] = useState({});
 
     const connectToSpotify = (token) => {
-        let player = new window.Spotify.Player({
+        player = new window.Spotify.Player({
             name: 'wavesound',
             getOAuthToken: callback => {
                 callback(token);
@@ -67,7 +73,6 @@ export default function Frame({children, ...restProps}){
                     setPaused(state.paused);
                 }
             });
-            console.log(state);
         });
     
         // Ready
@@ -85,9 +90,25 @@ export default function Frame({children, ...restProps}){
         player.connect();
     }
 
+    //PLAYER -------------------------------------------------------
+    /*const [timing, setTiming] = useState(0);
+    const requestRef = useRef();
+    const previousTimeRef = useRef();
+    const time = timestamp => {
+        if(previousTimeRef.current != undefined) {
+            const deltaTime = time - previousTimeRef.current;
+
+            player && player.getCurrentState().then(state => setTiming(state && state.position));
+        }
+        previousTimeRef.current = timestamp;
+        requestRef.current = requestAnimationFrame(time);
+    }
+
     useEffect(() => {
-        setToken(getHash().access_token);
-    }, [token]);
+        requestRef.current = requestAnimationFrame(time);
+        return () => cancelAnimationFrame(requestRef.current);
+    }, []);*/
+    //PLAYER --------------------------------------------------------
 
     useEffect(() => {
         if(token) {
@@ -103,7 +124,11 @@ export default function Frame({children, ...restProps}){
                 console.log(e);
                 setUserData({});
             });
+        } else {
+            setToken(getHash().access_token);
         }
+
+        return player && player.disconnect();
     }, [token]);
 
     return (
@@ -148,10 +173,10 @@ export default function Frame({children, ...restProps}){
                     <Player.PrevButton onClick={() => {requestPrevPlayback(token)}} />
                     {paused ? 
                         <Player.PlayButton 
-                            onClick={() => {requestResume(token);}} 
+                            onClick={() => {player.resume();}} 
                         /> : 
                         <Player.PauseButton 
-                            onClick={()=>{requestPausePlayback(token)}}
+                            onClick={()=>{player.pause()}}
                     />}
                     <Player.NextButton onClick={() => {requestNextPlayback(token)}} />
                 </Player.Buttons>
